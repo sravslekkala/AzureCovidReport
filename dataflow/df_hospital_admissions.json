@@ -13,14 +13,14 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "LookupCountries",
+						"referenceName": "ds_lookup_dim_country",
 						"type": "DatasetReference"
 					},
 					"name": "sourceCountryCodes"
 				},
 				{
 					"dataset": {
-						"referenceName": "ds_dim_date",
+						"referenceName": "ds_lookup_dim_date",
 						"type": "DatasetReference"
 					},
 					"name": "sourceDimDate"

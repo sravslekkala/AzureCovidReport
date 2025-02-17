@@ -1,5 +1,5 @@
 {
-	"name": "LookupCountries",
+	"name": "ds_lookup_dim_country",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_gen2_covidsravs",
@@ -11,6 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "country_lookup.csv",
+				"folderPath": "dim_country",
 				"fileSystem": "lookup"
 			},
 			"columnDelimiter": ",",

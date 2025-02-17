@@ -1,5 +1,5 @@
 {
-	"name": "ds_dim_date",
+	"name": "ds_lookup_dim_date",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_gen2_covidsravs",
@@ -11,6 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": "dim_date.csv",
+				"folderPath": "dim_date",
 				"fileSystem": "lookup"
 			},
 			"columnDelimiter": ",",

@@ -1,5 +1,5 @@
 {
-	"name": "Pl_load_ECDC_data",
+	"name": "pl_load_ecdc_data",
 	"properties": {
 		"activities": [
 			{
@@ -146,7 +146,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_load_ECDC_https",
+									"referenceName": "ds_load_ecdc_https",
 									"type": "DatasetReference",
 									"parameters": {
 										"relativeUrl": {
@@ -158,7 +158,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Ds_load_ECDC_dl",
+									"referenceName": "ds_load_ecdc_dl",
 									"type": "DatasetReference",
 									"parameters": {
 										"fileName": {

@@ -1,5 +1,5 @@
 {
-	"name": "ds_load_ECDC_https",
+	"name": "ds_load_ecdc_https",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_get_EDCD_data",

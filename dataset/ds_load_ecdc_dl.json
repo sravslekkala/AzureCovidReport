@@ -1,5 +1,5 @@
 {
-	"name": "Ds_load_ECDC_dl",
+	"name": "ds_load_ecdc_dl",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_gen2_covidsravs",

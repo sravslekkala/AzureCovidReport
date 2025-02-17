@@ -1,5 +1,5 @@
 {
-	"name": "LookupCountries",
+	"name": "ds_hospital_admissions",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_gen2_covidsravs",
@@ -10,8 +10,9 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "country_lookup.csv",
-				"fileSystem": "lookup"
+				"fileName": "hospital_admissions.csv",
+				"folderPath": "ecdc",
+				"fileSystem": "raw"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
@@ -24,19 +25,27 @@
 				"type": "String"
 			},
 			{
-				"name": "country_code_2_digit",
+				"name": "indicator",
 				"type": "String"
 			},
 			{
-				"name": "country_code_3_digit",
+				"name": "date",
 				"type": "String"
 			},
 			{
-				"name": "continent",
+				"name": "year_week",
 				"type": "String"
 			},
 			{
-				"name": "population",
+				"name": "value",
+				"type": "String"
+			},
+			{
+				"name": "source",
+				"type": "String"
+			},
+			{
+				"name": "url",
 				"type": "String"
 			}
 		]

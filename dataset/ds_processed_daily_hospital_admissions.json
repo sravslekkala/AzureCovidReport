@@ -1,5 +1,5 @@
 {
-	"name": "LookupCountries",
+	"name": "ds_processed_daily_hospital_admissions",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_gen2_covidsravs",
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "country_lookup.csv",
-				"fileSystem": "lookup"
+				"folderPath": "ecdc/hospital_admissions_daily",
+				"fileSystem": "processed"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
@@ -21,6 +21,26 @@
 		"schema": [
 			{
 				"name": "country",
+				"type": "String"
+			},
+			{
+				"name": "country_code",
+				"type": "String"
+			},
+			{
+				"name": "source",
+				"type": "String"
+			},
+			{
+				"name": "reported_date",
+				"type": "String"
+			},
+			{
+				"name": "confirmed cases",
+				"type": "String"
+			},
+			{
+				"name": "deaths",
 				"type": "String"
 			},
 			{

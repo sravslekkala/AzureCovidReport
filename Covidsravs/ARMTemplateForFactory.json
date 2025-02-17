@@ -236,7 +236,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Pl_load_ECDC_data')]",
+			"name": "[concat(parameters('factoryName'), '/pl_load_ecdc_data')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -386,7 +386,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "ds_load_ECDC_https",
+											"referenceName": "ds_load_ecdc_https",
 											"type": "DatasetReference",
 											"parameters": {
 												"relativeUrl": {
@@ -398,7 +398,7 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "Ds_load_ECDC_dl",
+											"referenceName": "ds_load_ecdc_dl",
 											"type": "DatasetReference",
 											"parameters": {
 												"fileName": {
@@ -429,8 +429,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_filenames_json')]",
-				"[concat(variables('factoryId'), '/datasets/ds_load_ECDC_https')]",
-				"[concat(variables('factoryId'), '/datasets/Ds_load_ECDC_dl')]"
+				"[concat(variables('factoryId'), '/datasets/ds_load_ecdc_https')]",
+				"[concat(variables('factoryId'), '/datasets/ds_load_ecdc_dl')]"
 			]
 		},
 		{
@@ -527,43 +527,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/df_hospital_admissions')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Ds_load_ECDC_dl')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_gen2_covidsravs",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"fileName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().fileName",
-							"type": "Expression"
-						},
-						"folderPath": "ecdc",
-						"fileSystem": "raw"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_gen2_covidsravs')]"
 			]
 		},
 		{
@@ -908,7 +871,44 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_load_ECDC_https')]",
+			"name": "[concat(parameters('factoryName'), '/ds_load_ecdc_dl')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_gen2_covidsravs",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": "ecdc",
+						"fileSystem": "raw"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_gen2_covidsravs')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_load_ecdc_https')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1154,7 +1154,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Pl_load_ECDC_data",
+							"referenceName": "pl_load_ecdc_data",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -1171,7 +1171,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Pl_load_ECDC_data')]"
+				"[concat(variables('factoryId'), '/pipelines/pl_load_ecdc_data')]"
 			]
 		},
 		{

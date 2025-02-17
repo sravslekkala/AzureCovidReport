@@ -73,7 +73,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Pl_load_ECDC_data",
+							"referenceName": "pl_load_ecdc_data",
 							"type": "PipelineReference"
 						},
 						"parameters": {}

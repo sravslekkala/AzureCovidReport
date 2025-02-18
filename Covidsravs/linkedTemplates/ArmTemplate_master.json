@@ -19,6 +19,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_gen2_covidsravs'"
 		},
+		"ls_sql_database_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sql_database'"
+		},
+		"ls_sql_db_connect_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_sql_db_connect'"
+		},
 		"ls_databricks_properties_typeProperties_existingClusterId": {
 			"type": "string",
 			"defaultValue": "1203-234322-n5bk1wk2"
@@ -30,6 +38,18 @@
 		"ls_get_EDCD_data_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://github.com/"
+		},
+		"ls_sql_db_connect_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "covidsrvsravs.database.windows.net"
+		},
+		"ls_sql_db_connect_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "coviddbsravs"
+		},
+		"ls_sql_db_connect_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "sravs"
 		},
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"type": "string",
@@ -71,6 +91,12 @@
 					"ls_gen2_covidsravs_accountKey": {
 						"value": "[parameters('ls_gen2_covidsravs_accountKey')]"
 					},
+					"ls_sql_database_connectionString": {
+						"value": "[parameters('ls_sql_database_connectionString')]"
+					},
+					"ls_sql_db_connect_password": {
+						"value": "[parameters('ls_sql_db_connect_password')]"
+					},
 					"ls_databricks_properties_typeProperties_existingClusterId": {
 						"value": "[parameters('ls_databricks_properties_typeProperties_existingClusterId')]"
 					},
@@ -79,6 +105,15 @@
 					},
 					"ls_get_EDCD_data_properties_typeProperties_url": {
 						"value": "[parameters('ls_get_EDCD_data_properties_typeProperties_url')]"
+					},
+					"ls_sql_db_connect_properties_typeProperties_server": {
+						"value": "[parameters('ls_sql_db_connect_properties_typeProperties_server')]"
+					},
+					"ls_sql_db_connect_properties_typeProperties_database": {
+						"value": "[parameters('ls_sql_db_connect_properties_typeProperties_database')]"
+					},
+					"ls_sql_db_connect_properties_typeProperties_userName": {
+						"value": "[parameters('ls_sql_db_connect_properties_typeProperties_userName')]"
 					}
 				}
 			},

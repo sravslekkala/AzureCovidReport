@@ -14,6 +14,12 @@
 		"ls_gen2_covidsravs_accountKey": {
 			"value": ""
 		},
+		"ls_sql_database_connectionString": {
+			"value": ""
+		},
+		"ls_sql_db_connect_password": {
+			"value": ""
+		},
 		"ls_databricks_properties_typeProperties_existingClusterId": {
 			"value": "1203-234322-n5bk1wk2"
 		},
@@ -22,6 +28,15 @@
 		},
 		"ls_get_EDCD_data_properties_typeProperties_url": {
 			"value": "https://github.com/"
+		},
+		"ls_sql_db_connect_properties_typeProperties_server": {
+			"value": "covidsrvsravs.database.windows.net"
+		},
+		"ls_sql_db_connect_properties_typeProperties_database": {
+			"value": "coviddbsravs"
+		},
+		"ls_sql_db_connect_properties_typeProperties_userName": {
+			"value": "sravs"
 		},
 		"tr_ingest_population_data_properties_typeProperties_scope": {
 			"value": "/subscriptions/e5defa48-3dbe-4866-836a-894f1036b49b/resourceGroups/covidrg/providers/Microsoft.Storage/storageAccounts/covidsravs"

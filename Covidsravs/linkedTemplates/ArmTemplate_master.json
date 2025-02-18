@@ -51,7 +51,7 @@
 			"type": "string",
 			"defaultValue": "sravs"
 		},
-		"tr_ingest_population_data_properties_typeProperties_scope": {
+		"tr_population_data_arrived_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e5defa48-3dbe-4866-836a-894f1036b49b/resourceGroups/covidrg/providers/Microsoft.Storage/storageAccounts/covidsravs"
 		},
@@ -133,8 +133,8 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"tr_ingest_population_data_properties_typeProperties_scope": {
-						"value": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]"
+					"tr_population_data_arrived_properties_typeProperties_scope": {
+						"value": "[parameters('tr_population_data_arrived_properties_typeProperties_scope')]"
 					}
 				}
 			},

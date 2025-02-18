@@ -7,7 +7,7 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Covidsravs"
 		},
-		"tr_ingest_population_data_properties_typeProperties_scope": {
+		"tr_population_data_arrived_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e5defa48-3dbe-4866-836a-894f1036b49b/resourceGroups/covidrg/providers/Microsoft.Storage/storageAccounts/covidsravs"
 		}
@@ -24,6 +24,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_sql_db_connect",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "sql"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -72,7 +75,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Pl_copyPopulation')]",
+			"name": "[concat(parameters('factoryName'), '/Pl_load_population')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -84,7 +87,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_blob_covidsravs",
+								"referenceName": "ds_load_population",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -114,7 +117,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_blob_covidsravs",
+								"referenceName": "ds_load_population",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -213,7 +216,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "ds_blob_covidsravs",
+											"referenceName": "ds_load_population",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -247,7 +250,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "ds_blob_covidsravs",
+											"referenceName": "ds_load_population",
 											"type": "DatasetReference",
 											"parameters": {}
 										},
@@ -265,6 +268,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "load_raw"
 				},
 				"annotations": [],
 				"lastPublishTime": "2025-02-13T19:14:17Z"
@@ -445,6 +451,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "sql"
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -613,6 +622,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "sql"
 				},
 				"annotations": []
 			},
@@ -808,6 +820,9 @@
 					"setDestinationFilePath": {
 						"type": "String"
 					}
+				},
+				"folder": {
+					"name": "load_raw"
 				},
 				"annotations": [],
 				"lastPublishTime": "2025-02-14T02:45:02Z"
@@ -1247,6 +1262,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "process"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -1296,10 +1314,70 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "process"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/df_hospital_admissions')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pl_run_population_pipelines')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "loadPopulationData",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Pl_load_population",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "processPopulation",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "loadPopulationData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_process_population",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Pl_load_population')]"
 			]
 		},
 		{
@@ -1333,7 +1411,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tr_ingest_population_data')]",
+			"name": "[concat(parameters('factoryName'), '/tr_population_data_arrived')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1342,7 +1420,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Pl_copyPopulation",
+							"referenceName": "pl_run_population_pipelines",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -1350,16 +1428,16 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/population/blobs/",
+					"blobPathBeginsWith": "/population/blobs/population_by_age.tsv.gz",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]",
+					"scope": "[parameters('tr_population_data_arrived_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Pl_copyPopulation')]"
+				"[concat(variables('factoryId'), '/pipelines/pl_run_population_pipelines')]"
 			]
 		}
 	]

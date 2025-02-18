@@ -51,7 +51,7 @@
 			"type": "string",
 			"defaultValue": "sravs"
 		},
-		"tr_ingest_population_data_properties_typeProperties_scope": {
+		"tr_population_data_arrived_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/e5defa48-3dbe-4866-836a-894f1036b49b/resourceGroups/covidrg/providers/Microsoft.Storage/storageAccounts/covidsravs"
 		}
@@ -61,7 +61,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/Pl_copyPopulation')]",
+			"name": "[concat(parameters('factoryName'), '/Pl_load_population')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -73,7 +73,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_blob_covidsravs",
+								"referenceName": "ds_load_population",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -103,7 +103,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "ds_blob_covidsravs",
+								"referenceName": "ds_load_population",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -202,7 +202,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "ds_blob_covidsravs",
+											"referenceName": "ds_load_population",
 											"type": "DatasetReference",
 											"parameters": {}
 										}
@@ -236,7 +236,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "ds_blob_covidsravs",
+											"referenceName": "ds_load_population",
 											"type": "DatasetReference",
 											"parameters": {}
 										},
@@ -255,11 +255,14 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "load_raw"
+				},
 				"annotations": [],
 				"lastPublishTime": "2025-02-13T19:14:17Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_blob_covidsravs')]",
+				"[concat(variables('factoryId'), '/datasets/ds_load_population')]",
 				"[concat(variables('factoryId'), '/datasets/ds_datalake_covidsravs')]"
 			]
 		},
@@ -437,6 +440,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "sql"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -608,6 +614,9 @@
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "sql"
 				},
 				"annotations": []
 			},
@@ -805,6 +814,9 @@
 						"type": "String"
 					}
 				},
+				"folder": {
+					"name": "load_raw"
+				},
 				"annotations": [],
 				"lastPublishTime": "2025-02-14T02:45:02Z"
 			},
@@ -855,6 +867,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "process"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -904,6 +919,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "process"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -940,6 +958,9 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "process"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -947,41 +968,61 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_blob_covidsravs')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/pl_run_population_pipelines')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_blobstorage_covidsravs",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "population_by_age.tsv.gz",
-						"container": "population"
-					},
-					"columnDelimiter": "\t",
-					"compressionCodec": "gzip",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
+				"activities": [
 					{
-						"name": "\u001f�\b\bHK�^\u0000\u0003tps00010.tsv\u0000�\\ێ�H�}�~E~�� ����ۖ�B�l��j��\u0002\u0006�c",
-						"type": "String"
+						"name": "loadPopulationData",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Pl_load_population",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					},
 					{
-						"name": "�aw����U���8��jz�m�p$Q�ɸg0�������\u001f?���o�������_�\u000e]��!ᒰm\u0004[�N0",
-						"type": "String"
+						"name": "processPopulation",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "loadPopulationData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pl_process_population",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
-				]
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_blobstorage_covidsravs')]"
+				"[concat(variables('factoryId'), '/pipelines/Pl_load_population')]",
+				"[concat(variables('factoryId'), '/pipelines/pl_process_population')]"
 			]
 		},
 		{
@@ -992,6 +1033,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1059,6 +1103,9 @@
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1088,6 +1135,9 @@
 					"referenceName": "ls_blobstorage_covidsravs",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "lookup"
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
@@ -1111,6 +1161,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1175,6 +1228,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1212,6 +1268,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "raw"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1235,6 +1294,47 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_load_population')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_blobstorage_covidsravs",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "raw"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "population_by_age.tsv.gz",
+						"container": "population"
+					},
+					"columnDelimiter": "\t",
+					"compressionCodec": "gzip",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "\u001f�\b\bHK�^\u0000\u0003tps00010.tsv\u0000�\\ێ�H�}�~E~�� ����ۖ�B�l��j��\u0002\u0006�c",
+						"type": "String"
+					},
+					{
+						"name": "�aw����U���8��jz�m�p$Q�ɸg0�������\u001f?���o�������_�\u000e]��!ᒰm\u0004[�N0",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_blobstorage_covidsravs')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_lookup_dim_country')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1242,6 +1342,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "lookup"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1292,6 +1395,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "lookup"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1371,6 +1477,9 @@
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1398,6 +1507,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "processed"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
@@ -1468,6 +1580,9 @@
 					"referenceName": "ls_gen2_covidsravs",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "processed"
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
@@ -1527,6 +1642,9 @@
 					"referenceName": "ls_sql_db_connect",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "sql"
+				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
@@ -1583,6 +1701,9 @@
 				"linkedServiceName": {
 					"referenceName": "ls_sql_db_connect",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "sql"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
@@ -1761,7 +1882,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tr_ingest_population_data')]",
+			"name": "[concat(parameters('factoryName'), '/tr_population_data_arrived')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1770,7 +1891,7 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Pl_copyPopulation",
+							"referenceName": "pl_run_population_pipelines",
 							"type": "PipelineReference"
 						},
 						"parameters": {}
@@ -1778,16 +1899,16 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/population/blobs/",
+					"blobPathBeginsWith": "/population/blobs/population_by_age.tsv.gz",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('tr_ingest_population_data_properties_typeProperties_scope')]",
+					"scope": "[parameters('tr_population_data_arrived_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Pl_copyPopulation')]"
+				"[concat(variables('factoryId'), '/pipelines/pl_run_population_pipelines')]"
 			]
 		},
 		{

@@ -8,8 +8,14 @@
 		"ls_blobstorage_covidsravs_connectionString": {
 			"value": ""
 		},
+		"ls_databricks_accessToken": {
+			"value": ""
+		},
 		"ls_gen2_covidsravs_accountKey": {
 			"value": ""
+		},
+		"ls_databricks_properties_typeProperties_existingClusterId": {
+			"value": "1203-234322-n5bk1wk2"
 		},
 		"ls_gen2_covidsravs_properties_typeProperties_url": {
 			"value": "https://covidsravsdl.dfs.core.windows.net/"

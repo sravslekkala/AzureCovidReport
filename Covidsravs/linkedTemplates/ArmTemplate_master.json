@@ -11,9 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_blobstorage_covidsravs'"
 		},
+		"ls_databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'ls_databricks'"
+		},
 		"ls_gen2_covidsravs_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_gen2_covidsravs'"
+		},
+		"ls_databricks_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1203-234322-n5bk1wk2"
 		},
 		"ls_gen2_covidsravs_properties_typeProperties_url": {
 			"type": "string",
@@ -57,8 +65,14 @@
 					"ls_blobstorage_covidsravs_connectionString": {
 						"value": "[parameters('ls_blobstorage_covidsravs_connectionString')]"
 					},
+					"ls_databricks_accessToken": {
+						"value": "[parameters('ls_databricks_accessToken')]"
+					},
 					"ls_gen2_covidsravs_accountKey": {
 						"value": "[parameters('ls_gen2_covidsravs_accountKey')]"
+					},
+					"ls_databricks_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('ls_databricks_properties_typeProperties_existingClusterId')]"
 					},
 					"ls_gen2_covidsravs_properties_typeProperties_url": {
 						"value": "[parameters('ls_gen2_covidsravs_properties_typeProperties_url')]"

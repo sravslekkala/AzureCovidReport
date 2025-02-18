@@ -5,8 +5,8 @@
 		"runtimeState": "Started",
 		"type": "TumblingWindowTrigger",
 		"typeProperties": {
-			"frequency": "Minute",
-			"interval": 15,
+			"frequency": "Hour",
+			"interval": 24,
 			"startTime": "2025-02-18T13:00:00Z",
 			"delay": "00:00:00",
 			"maxConcurrency": 50,

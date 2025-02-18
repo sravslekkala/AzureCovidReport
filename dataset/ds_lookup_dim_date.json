@@ -5,6 +5,9 @@
 			"referenceName": "ls_gen2_covidsravs",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "lookup"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {

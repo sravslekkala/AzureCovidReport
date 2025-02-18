@@ -1,9 +1,12 @@
 {
-	"name": "ds_blob_covidsravs",
+	"name": "ds_load_population",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_blobstorage_covidsravs",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "raw"
 		},
 		"annotations": [],
 		"type": "DelimitedText",

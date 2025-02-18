@@ -1,5 +1,5 @@
 {
-	"name": "Pl_copyPopulation",
+	"name": "Pl_load_population",
 	"properties": {
 		"activities": [
 			{
@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ds_blob_covidsravs",
+						"referenceName": "ds_load_population",
 						"type": "DatasetReference"
 					},
 					"timeout": "0.00:02:30",
@@ -38,7 +38,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "ds_blob_covidsravs",
+						"referenceName": "ds_load_population",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -136,7 +136,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "ds_blob_covidsravs",
+									"referenceName": "ds_load_population",
 									"type": "DatasetReference"
 								}
 							],
@@ -168,7 +168,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "ds_blob_covidsravs",
+									"referenceName": "ds_load_population",
 									"type": "DatasetReference"
 								},
 								"enableLogging": false,
@@ -183,6 +183,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "load_raw"
+		},
 		"annotations": [],
 		"lastPublishTime": "2025-02-13T19:14:17Z"
 	},
